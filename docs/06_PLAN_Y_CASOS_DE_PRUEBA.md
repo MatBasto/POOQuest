@@ -1,0 +1,55 @@
+# 6. Plan y casos de prueba
+
+## Objetivo
+Validar que POOQuest cumpla los requisitos funcionales y no funcionales definidos en la planeación, verificando autenticación, aprendizaje, ejecución de Java, progreso, gamificación, usabilidad y seguridad.
+
+## Estrategia
+- **Pruebas funcionales:** caja negra sobre RF-01 a RF-12.
+- **Pruebas de integración:** Next.js + Supabase + Judge0.
+- **Pruebas no funcionales:** rendimiento, responsive y seguridad de rutas/RLS.
+- **Pruebas de regresión:** repetir casos críticos después de cambios.
+- **Criterio de salida:** 100% de casos de prioridad alta aprobados y sin defectos críticos abiertos.
+
+## Casos de prueba
+
+| ID | Req. | Caso | Precondición | Pasos resumidos | Resultado esperado |
+|---|---|---|---|---|---|
+| CP-01 | RF-01 | Registro válido | No existe el correo | Abrir /login; Registrarse; diligenciar nombre/correo/contraseña; enviar | Se crea la cuenta y se informa confirmación o se inicia según configuración |
+| CP-02 | RF-01 | Correo duplicado | Existe una cuenta con el correo | Intentar registrar el mismo correo | No se crea una segunda cuenta y se informa el error |
+| CP-03 | RF-02 | Inicio de sesión correcto | Cuenta activa | Ingresar credenciales válidas | Abre /dashboard y crea sesión |
+| CP-04 | RF-02 | Inicio de sesión incorrecto | Cuenta existente | Ingresar contraseña incorrecta | Permanece en login e informa error |
+| CP-05 | RF-03 | Cerrar sesión | Sesión activa | Pulsar Cerrar sesión | Vuelve a /login y las rutas privadas requieren autenticación |
+| CP-06 | RF-04 | Abrir nivel disponible | Sesión y XP suficiente | Entrar a módulo y seleccionar nivel disponible | Carga el nivel |
+| CP-07 | RF-04 | Bloqueo de nivel | XP menor a required_xp | Intentar abrir nivel bloqueado por URL | Redirige al módulo y no muestra el contenido |
+| CP-08 | RF-05 | Consultar contenido | Nivel disponible | Abrir pestaña Contenido | Se muestran explicación y ejemplo Java |
+| CP-09 | RF-06 | Visual interactivo | Contenido con visual_type | Abrir nivel | La animación se renderiza y no bloquea la lectura |
+| CP-10 | RF-07 | Actividad correcta | Actividad disponible | Elegir opción correcta | Registra intento, muestra feedback correcto y entrega XP solo la primera vez |
+| CP-11 | RF-07 | Actividad incorrecta | Actividad disponible | Elegir opción incorrecta | Registra intento, muestra feedback y permite reintento |
+| CP-12 | RF-08 | Abrir reto Java | Nivel con reto | Ir a Reto Java | Muestra enunciado, editor y salida esperada |
+| CP-13 | RF-09 | Ejecución correcta | Judge0 configurado | Escribir solución correcta y Ejecutar | Muestra stdout y marca reto superado |
+| CP-14 | RF-09 | Error de compilación | Judge0 configurado | Enviar Java con error sintáctico | Muestra compile_output/stderr sin borrar el código |
+| CP-15 | RF-09 | Judge0 no disponible | Sesión activa | Desconfigurar JUDGE0_URL y ejecutar | Informa fallo controlado; el editor conserva el código |
+| CP-16 | RF-10 | Retroalimentación de actividad | Intento evaluado | Responder actividad | Muestra mensaje coherente con acierto/error |
+| CP-17 | RF-10 | Retroalimentación de reto | Reto ejecutado | Comparar salida real con esperada | Muestra estado y resultado |
+| CP-18 | RF-11 | Consultar progreso | Existe al menos un intento | Abrir /progress | Lista niveles iniciados y porcentaje |
+| CP-19 | RF-12 | Asignar insignia | XP cruza un umbral | Completar actividades hasta superar 100 XP | Aparece Primer paso en Recompensas |
+| CP-20 | RF-12 | No duplicar recompensa | Insignia ya obtenida | Continuar ganando XP | No se crea una segunda fila para la misma insignia |
+| CP-21 | RNF-Rendimiento | Carga principal | Conexión estable | Medir /dashboard con DevTools | Objetivo <= 3 s en entorno de prueba definido |
+| CP-22 | RNF-Rendimiento | Ejecución Java | Judge0 disponible | Medir tiempo desde Ejecutar hasta respuesta | Objetivo <= 10 s |
+| CP-23 | RNF-Usabilidad | Pantalla 360 px | Navegador responsive | Abrir páginas a 360 px | No existe scroll horizontal y controles principales son utilizables |
+| CP-24 | RNF-Usabilidad | Acceso a nivel en <=3 acciones | Sesión activa | Desde dashboard contar interacciones hasta nivel | Se llega en máximo 3 acciones |
+| CP-25 | RNF-Seguridad | Ruta privada sin sesión | Sesión cerrada | Abrir /dashboard directamente | Redirige a /login |
+| CP-26 | RNF-Seguridad | Aislamiento de datos | Dos usuarios | Usuario A consulta tablas propias; repetir con B | RLS impide consultar intentos/progreso/recompensas ajenos |
+| CP-27 | RNF-Seguridad | No exponer clave Judge0 | Aplicación compilada | Inspeccionar bundle/Network del navegador | La clave solo existe en variables del servidor |
+| CP-28 | Integración | Cálculo de progreso | Nivel con actividad y reto | Completar ambos | El nivel llega a 100%, cambia a completed y entrega XP de nivel una vez |
+| CP-29 | Integración | XP no repetible | Actividad ya acertada | Responderla correctamente otra vez | Registra intento pero xp_awarded=0 |
+| CP-30 | Integración | Persistencia | Sesión activa con progreso | Cerrar sesión y volver a entrar | XP, progreso e insignias se conservan |
+
+## Registro de ejecución
+Para cada ciclo de pruebas agregar: fecha, versión, responsable, navegador/dispositivo, resultado (Aprobado/Fallido), evidencia y defecto asociado.
+
+## Datos de prueba recomendados
+- Usuario A: estudiante.a@ejemplo.com
+- Usuario B: estudiante.b@ejemplo.com
+- Contraseñas de laboratorio de mínimo 8 caracteres.
+- No usar credenciales reales en capturas o informes.
