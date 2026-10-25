@@ -8,7 +8,7 @@ export type LevelRow = {
 export type ContentRow = {
   id: number; level_id: number; title: string; body: string; code_example: string | null; visual_type: string | null; sort_order: number;
 };
-export type ActivityOption = { id: number; activity_id: number; option_text: string; sort_order: number };
+export type ActivityOption = { id: number; activity_id: number; option_text: string; sort_order: number; is_correct?: boolean };
 export type Activity = {
   id: number; level_id: number; question: string; feedback_correct: string; feedback_incorrect: string; xp_reward: number;
   activity_options: ActivityOption[];
