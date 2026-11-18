@@ -8,7 +8,7 @@ type AdventureModule = ModuleRow & {
   nextLevelId?: number;
 };
 
-export function AdventureMap({ modules }: { modules: AdventureModule[] }) {
+export function AdventureMap({ modules, showActions = true }: { modules: AdventureModule[]; showActions?: boolean }) {
   return (
     <div className="adventure-map">
       <div className="map-line" aria-hidden="true" />
@@ -26,7 +26,7 @@ export function AdventureMap({ modules }: { modules: AdventureModule[] }) {
                   <div className="progress"><span style={{ width: `${module.progress}%` }} /></div>
                   <strong>{module.progress}%</strong>
                 </div>
-                {module.unlocked ? (
+                {module.unlocked ? showActions && (
                   <Link className="btn territory-button" href={module.nextLevelId ? `/levels/${module.nextLevelId}` : `/modules/${module.id}`}>
                     {module.progress >= 100 ? "Revisitar territorio" : module.progress > 0 ? "Continuar misión" : "Entrar al territorio"}
                   </Link>

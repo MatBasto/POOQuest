@@ -43,10 +43,10 @@ export function Sidebar({ name, xp }: { name: string; xp: number }) {
         POO<span>Quest</span><small>ADVENTURE</small>
       </Link>
       <div className="sidebar-mission-label">NAVEGACIÓN</div>
-      <nav className="nav">
+      <nav className="nav" aria-label="Navegación principal">
         {links.map((link) => {
           const active = pathname === link.href || (link.href !== "/dashboard" && pathname.startsWith(`${link.href}/`));
-          return <Link className={active ? "active" : ""} href={link.href} key={link.href}><span>{link.icon}</span>{link.label}</Link>;
+          return <Link aria-current={active ? "page" : undefined} className={active ? "active" : ""} href={link.href} key={link.href}><span aria-hidden="true">{link.icon}</span>{link.label}</Link>;
         })}
       </nav>
       <div className="profile-mini">

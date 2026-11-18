@@ -80,7 +80,7 @@ export default async function DashboardPage() {
           {nextMission ? (
             <div className="next-mission-card">
               <div><small>SIGUIENTE MISIÓN</small><strong>{nextModule?.name} · {nextMission.name}</strong><span>{nextMission.description}</span></div>
-              <Link className="btn" href={`/levels/${nextMission.id}`}>Continuar →</Link>
+              <Link className="btn" href={`/levels/${nextMission.id}`}>Continuar aventura →</Link>
             </div>
           ) : (
             <div className="next-mission-card"><div><small>RUTA COMPLETADA</small><strong>Has recorrido todas las misiones disponibles</strong><span>Puedes revisitar cualquier territorio para practicar.</span></div><Link className="btn" href="/modules">Explorar territorios</Link></div>
@@ -98,16 +98,17 @@ export default async function DashboardPage() {
       </section>
 
       <section className="mission-meter">
-        <div><div className="kicker">Próximo hito</div><strong>{milestone.next} XP</strong><span>Te faltan {milestone.remaining} XP para alcanzar el siguiente logro.</span></div>
+        <div><div className="kicker">Próximo hito</div><strong>{milestone.next} XP</strong><span>Te faltan {milestone.remaining} XP para alcanzar el siguiente hito de experiencia.</span></div>
         <div className="progress"><span style={{ width: `${Math.max(8, Math.min(100, ((milestone.next - milestone.remaining) / milestone.next) * 100))}%` }} /></div>
         <Link href="/rewards">Ver logros →</Link>
       </section>
 
       <div className="map-heading">
         <div><div className="kicker">Mapa de POOQuest</div><h2>Los cuatro territorios</h2></div>
-        <Link href="/how-to-play" className="btn secondary">? Cómo se juega</Link>
+
       </div>
-      <AdventureMap modules={adventureModules} />
+      <p className="subtitle">Consulta tu avance en el mapa. Para elegir otra misión, abre Territorios en el menú.</p>
+      <AdventureMap modules={adventureModules} showActions={false} />
     </div>
   );
 }

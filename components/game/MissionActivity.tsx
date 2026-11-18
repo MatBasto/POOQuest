@@ -7,6 +7,18 @@ import { missionGames } from "@/lib/game";
 import { playGameSound, primeSound } from "@/lib/sound";
 import type { Activity } from "@/lib/types";
 
+const instructions = {
+  select: ["Selección múltiple", "Marca todas las opciones correctas. Puedes desmarcarlas antes de pulsar Comprobar."],
+  classify: ["Clasificación", "Elige un grupo para cada tarjeta. Puedes cambiarlo antes de pulsar Comprobar."],
+  sequence: ["Ordenar elementos", "Pulsa las tarjetas en el orden que consideres correcto. Puedes deshacer el último paso antes de pulsar Comprobar."],
+  duel: ["Selección única", "Elige una sola respuesta. Se comprueba en cuanto la seleccionas."],
+} as const;
+
+function ExerciseGuide({ kind }: { kind: keyof typeof instructions }) {
+  const [label, instruction] = instructions[kind];
+  return <p className="exercise-guide"><strong>{label}</strong><span>{instruction}</span></p>;
+}
+
 type ActivityResult = {
   correct: boolean;
   feedback: string;
@@ -98,7 +110,9 @@ export function MissionActivity({
   async function finishReview() {
     primeSound();
     playGameSound("review");
+    setLoading(true);
     const score = await saveScore();
+    setLoading(false);
     setMessage("");
     setReviewing(false);
     setResult({
@@ -120,13 +134,14 @@ export function MissionActivity({
       return;
     }
     setLoading(true);
+    setResult(null);
     const { data, error } = await createClient().rpc("submit_activity", {
       p_activity_id: activity.id,
       p_option_id: correctOption.id,
     });
     if (error) {
       playGameSound("error");
-      setResult({ correct: false, feedback: error.message, xp_awarded: 0 });
+      setResult({ correct: false, feedback: "No se pudo guardar el intento. Comprueba tu conexión y vuelve a intentarlo.", xp_awarded: 0 });
     } else {
       const parsed = data as ActivityResult;
       if (parsed.correct) {
@@ -176,13 +191,13 @@ export function MissionActivity({
     if (!game || game.kind !== "classify") return;
     const correct = game.items.every((item) => assigned[item.id] === item.group);
     if (correct) completeCorrectly();
-    else fail("Algunas piezas están en el grupo equivocado. Revisa la pista de P00 y vuelve a intentarlo.");
+    else fail("Algunas piezas están en el grupo equivocado. Puedes cambiar el grupo de una tarjeta y volver a comprobar. Si lo necesitas, pide una pista.");
   }
 
   function validateSequence() {
     if (!game || game.kind !== "sequence") return;
     if (sequence.join("|") === game.order.join("|")) completeCorrectly();
-    else fail("La secuencia no activa el sistema. Reiníciala y piensa qué paso necesita ocurrir primero.");
+    else fail("La secuencia no activa el sistema. Piensa qué paso debe ocurrir primero. Usa Deshacer último paso o Reiniciar orden para corregirla.");
   }
 
   function chooseDuel(id: string) {
@@ -209,13 +224,14 @@ export function MissionActivity({
     }
 
     setLoading(true);
+    setResult(null);
     const { data, error } = await createClient().rpc("submit_activity", {
       p_activity_id: activity.id,
       p_option_id: optionId,
     });
     if (error) {
       playGameSound("error");
-      setResult({ correct: false, feedback: error.message, xp_awarded: 0 });
+      setResult({ correct: false, feedback: "No se pudo guardar el intento. Comprueba tu conexión y vuelve a intentarlo.", xp_awarded: 0 });
     } else {
       const parsed = data as ActivityResult;
       if (parsed.correct) {
@@ -246,7 +262,7 @@ export function MissionActivity({
           </span>
         </div>
 
-        {reviewing && <ReviewNotice />}
+        {reviewing && <ReviewNotice />}\n        <ExerciseGuide kind="duel" />
 
         <div className="mission-choice-grid">
           {activity.activity_options.map((option) => (
@@ -261,7 +277,7 @@ export function MissionActivity({
           ))}
         </div>
 
-        {message && !result && <div className="mission-alert">{message}</div>}
+        <div role="status">{message && !result && <div className="mission-alert">{message}</div>}</div>
         {result && (
           <MissionFeedback
             result={result}
@@ -290,13 +306,14 @@ export function MissionActivity({
 
       {reviewing && <ReviewNotice />}
 
+      <ExerciseGuide kind={game.kind} />
       <div className="p00-message">
         <div className="p00-avatar">P00</div>
         <div>
           <strong>{game.instruction}</strong>
           {showHint && <p>{game.hint}</p>}
         </div>
-        <button className="btn tiny secondary" disabled={!canInteract} onClick={toggleHint}>
+        <button className="btn tiny secondary" aria-expanded={showHint} disabled={!canInteract} onClick={toggleHint}>
           {showHint ? "Ocultar pista" : "Pedir pista"}
         </button>
       </div>
@@ -309,7 +326,7 @@ export function MissionActivity({
               return (
                 <button
                   key={item.id}
-                  className={`scan-card ${active ? "active" : ""}`}
+                  className={`scan-card ${active ? "active" : ""}`} aria-pressed={active}
                   disabled={!canInteract}
                   onClick={() => {
                     setMessage("");
@@ -323,7 +340,7 @@ export function MissionActivity({
               );
             })}
           </div>
-          {canInteract && <button className="btn mission-submit" disabled={loading} onClick={validateSelect}>Analizar selección</button>}
+          {canInteract && <button className="btn mission-submit" disabled={loading || selected.length === 0} onClick={validateSelect}>Comprobar</button>}
         </>
       )}
 
@@ -339,6 +356,7 @@ export function MissionActivity({
                       key={group}
                       disabled={!canInteract}
                       className={assigned[item.id] === group ? "selected" : ""}
+                      aria-pressed={assigned[item.id] === group} aria-label={`${item.label}: ${group}`}
                       onClick={() => {
                         setMessage("");
                         setAssigned({ ...assigned, [item.id]: group });
@@ -351,7 +369,7 @@ export function MissionActivity({
               </div>
             ))}
           </div>
-          {canInteract && <button className="btn mission-submit" disabled={loading} onClick={validateClassify}>Validar clasificación</button>}
+          {canInteract && <button className="btn mission-submit" disabled={loading || game.items.some((item) => !assigned[item.id])} onClick={validateClassify}>Comprobar</button>}
         </>
       )}
 
@@ -372,7 +390,7 @@ export function MissionActivity({
               ))}
             </div>
           </div>
-          {canInteract && <div className="row mission-actions"><button className="btn secondary" onClick={() => { setSequence([]); setMessage(""); }}>Reiniciar</button><button className="btn" disabled={loading || sequence.length !== game.items.length} onClick={validateSequence}>Activar protocolo</button></div>}
+          {canInteract && <div className="row mission-actions"><button className="btn secondary" onClick={() => { setSequence([]); setMessage(""); }} disabled={!sequence.length}>Reiniciar orden</button><button className="btn secondary" disabled={!sequence.length} onClick={() => { setSequence(sequence.slice(0, -1)); setMessage(""); }}>Deshacer último paso</button><button className="btn" disabled={loading || sequence.length !== game.items.length} onClick={validateSequence}>Comprobar</button></div>}
         </>
       )}
 
@@ -386,7 +404,7 @@ export function MissionActivity({
         </div>
       )}
 
-      {message && !result && <div className="mission-alert">{message}</div>}
+      <div role="status">{message && !result && <div className="mission-alert">{message}</div>}</div>
       {result && (
         <MissionFeedback
           result={result}
@@ -438,7 +456,7 @@ function MissionFeedback({
 }) {
   return (
     <div className={`mission-feedback ${result.correct ? "success" : "error"}`}>
-      <div>
+      <div role="status">
         <strong>{result.review ? "✓ REPASO COMPLETADO" : result.correct ? "✓ MISIÓN COMPLETADA" : "✕ MISIÓN INCOMPLETA"}</strong>
         <p>{result.feedback}</p>
       </div>

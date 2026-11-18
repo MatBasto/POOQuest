@@ -648,3 +648,24 @@ h2 { letter-spacing: -.025em; }
   .achievement-card-v5 { grid-template-columns: 52px 1fr; gap: 11px; }
   .achievement-v5-icon { width: 50px; height: 50px; border-radius: 14px; font-size: 1.35rem; }
 }
+
+/* Instrucciones y navegación accesible */
+.exercise-guide {
+  display: grid; gap: .35rem; margin: 0 0 1rem; padding: .85rem 1rem;
+  border: 1px solid #46647e; border-left: 4px solid #63d9ff;
+  border-radius: .65rem; background: #101e30; color: #eaf4ff;
+  line-height: 1.5;
+}
+.exercise-guide strong { color: #9ee9ff; }
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid #f9d775; outline-offset: 3px;
+}
+.next-mission-card .btn { font-weight: 800; min-height: 44px; }
+.skip-to-content {
+  position: fixed; top: .75rem; left: .75rem; z-index: 10000;
+  padding: .75rem 1rem; border-radius: .5rem; color: #102034;
+  background: #f9d775; transform: translateY(-200%);
+}
+.skip-to-content:focus { transform: translateY(0); }
+.sequence-options, .mission-actions { flex-wrap: wrap; }
+.mission-actions button { white-space: normal; }

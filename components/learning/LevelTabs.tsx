@@ -95,6 +95,7 @@ export function LevelTabs({
           <div className="stage-wrap" key={stage.id}>
             <button
               className={`stage-button ${tab === stage.id ? "active" : ""} ${stage.done ? "done" : ""} ${stage.id === "reto" && !missionDone ? "locked" : ""}`}
+              aria-current={tab === stage.id ? "step" : undefined}
               onClick={() => go(stage.id)}
               disabled={stage.id === "reto" && !missionDone}
             >
@@ -106,6 +107,8 @@ export function LevelTabs({
           </div>
         ))}
       </div>
+
+      {hasChallenge && !missionDone && <p className="subtitle">Completa la actividad para desbloquear el Jefe Java.</p>}
 
       {tab === "contenido" && (
         <div className="stack mission-content-stack">

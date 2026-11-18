@@ -8,7 +8,7 @@ import { playGameSound, primeSound } from "@/lib/sound";
 
 const Editor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
-type ExecuteResult = { output?: string; status?: string; passed?: boolean; error?: string };
+type ExecuteResult = { output?: string; status?: string; statusId?: number; passed?: boolean; error?: string };
 
 export function CodeChallenge({
   challenge,
@@ -30,6 +30,8 @@ export function CodeChallenge({
   const [hasEverPassed, setHasEverPassed] = useState(initiallyPassed);
   const [rewardGranted, setRewardGranted] = useState(false);
 
+  const [executionState, setExecutionState] = useState<"compile" | "runtime" | "output" | "service" | "session" | "input">("output");
+
   async function run() {
     primeSound();
     setLoading(true);
@@ -44,7 +46,15 @@ export function CodeChallenge({
         body: JSON.stringify({ challengeId: challenge.id, sourceCode: code }),
       });
       const data = await response.json() as ExecuteResult;
-      if (!response.ok) throw new Error(data.error || "Error de ejecución");
+      if (!response.ok) {
+        setExecutionState(response.status === 401 ? "session" : response.status === 400 ? "input" : "service");
+        setOut(response.status === 400 ? data.error || "Revisa el código enviado." : "No se pudo completar la solicitud.");
+        setStatus("Ejecución no completada");
+        setPassed(false);
+        playGameSound("error");
+        return;
+      }
+      setExecutionState(data.statusId === 6 ? "compile" : data.statusId === 3 ? "output" : "runtime");
       const didPass = Boolean(data.passed);
       const firstPass = didPass && !hasEverPassed;
       setOut(data.output || data.status || "Sin salida");
@@ -59,9 +69,10 @@ export function CodeChallenge({
         playGameSound("error");
       }
       router.refresh();
-    } catch (error: unknown) {
+    } catch {
       playGameSound("error");
-      setOut(error instanceof Error ? error.message : "No fue posible ejecutar el código.");
+      setExecutionState("service");
+      setOut("No se pudo conectar con el servicio de ejecución.");
       setStatus("Error de servicio");
       setPassed(false);
     } finally {
@@ -69,7 +80,14 @@ export function CodeChallenge({
     }
   }
 
-  const compileError = /compilation|compile|error/i.test(status) && !passed;
+  const recovery = {
+    compile: ["El código no compila", "Busca el primer error en la consola, revisa la línea indicada y vuelve a ejecutar."],
+    runtime: ["La ejecución no terminó correctamente", "Consulta la consola y revisa la operación que provocó el error o el bucle que no termina."],
+    output: ["La salida no coincide", "Compara la consola con el objetivo de salida. Revisa los valores, espacios y saltos de línea."],
+    service: ["No pudimos ejecutar Java", "Tu código sigue en el editor. Comprueba tu conexión y vuelve a ejecutar."],
+    session: ["Tu sesión ya no está activa", "Copia tu código antes de salir, vuelve a iniciar sesión y pega tu solución para ejecutarla."],
+    input: ["Revisa el código enviado", "Consulta la consola. Escribe un programa válido que no supere los 20.000 caracteres y vuelve a ejecutar."],
+  } as const;
 
   return (
     <div className="boss-arena">
@@ -86,6 +104,7 @@ export function CodeChallenge({
         </div>
       )}
 
+      <p className="exercise-guide"><strong>Reto Java</strong><span>Escribe tu solución en el editor, pulsa el botón de ejecución y compara la consola con la salida esperada. Si estás repasando, usa «Ejecutar como repaso».</span></p>
       <div className="boss-objective"><span>OBJETIVO DE SALIDA</span><code>{challenge.expected_output}</code></div>
 
       <div className="editor-shell">
@@ -96,24 +115,26 @@ export function CodeChallenge({
           theme="vs-dark"
           value={code}
           onChange={(value) => setCode(value || "")}
-          options={{ fontSize: 14, minimap: { enabled: false }, automaticLayout: true, padding: { top: 14 }, scrollBeyondLastLine: false }}
+          options={{ ariaLabel: "Editor de código Java", fontSize: 14, minimap: { enabled: false }, automaticLayout: true, padding: { top: 14 }, scrollBeyondLastLine: false }}
         />
       </div>
 
-      <button className="btn boss-run" onClick={run} disabled={loading}>{loading ? "ANALIZANDO MISIÓN..." : hasEverPassed ? "↻ EJECUTAR COMO REPASO" : "▶ EJECUTAR CÓDIGO JAVA"}</button>
+      <button className="btn boss-run" onClick={run} disabled={loading || !code.trim()}>{loading ? "ANALIZANDO MISIÓN..." : hasEverPassed ? "↻ EJECUTAR COMO REPASO" : "▶ EJECUTAR CÓDIGO JAVA"}</button>
       <div className="console-shell"><div className="console-title"><span>CONSOLA</span><small>{status}</small></div><div className="console">{out}</div></div>
 
+      <div role="status">
       {passed !== null && (
         <div className={`boss-result ${passed ? "success" : "failure"}`}>
           <div className="boss-result-icon">{passed ? "★" : "!"}</div>
           <div>
-            <strong>{passed ? rewardGranted ? "JEFE DERROTADO" : "REPASO SUPERADO" : compileError ? "EL CÓDIGO NO COMPILA" : "MISIÓN INCOMPLETA"}</strong>
-            <p>{passed ? rewardGranted ? "La salida coincide con la esperada. El Núcleo recuperó otro fragmento." : "La solución sigue siendo correcta. Tu progreso se conserva y no se añade XP duplicada." : compileError ? "Revisa el error mostrado en la consola, corrige el código y vuelve a ejecutar." : "El programa se ejecutó, pero la salida todavía no coincide con el objetivo."}</p>
+            <strong>{passed ? rewardGranted ? "JEFE DERROTADO" : "REPASO SUPERADO" : recovery[executionState][0]}</strong>
+            <p>{passed ? rewardGranted ? "La salida coincide con la esperada. El Núcleo recuperó otro fragmento." : "La solución sigue siendo correcta. Tu progreso se conserva y no se añade XP duplicada." : recovery[executionState][1]}</p>
           </div>
           {passed && rewardGranted && <span className="xp-burst">+{challenge.xp_reward} XP</span>}
           {passed && !rewardGranted && <span className="badge">Repaso · sin XP extra</span>}
         </div>
       )}
+      </div>
     </div>
   );
 }
