@@ -2,7 +2,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { PlaygroundKind } from "./OOPPlayground";
 type Props = { kind: PlaygroundKind; selected?: string; animal?: "Perro" | "Gato"; count?: number };
-const shown = (key: string) => ({ initial: { opacity: 0, y: 10, scale: 0.96 }, animate: { opacity: 1, y: 0, scale: 1 }, exit: { opacity: 0, y: -8, scale: 0.96 }, transition: { duration: 0.25 }, key });
+const shown = () => ({ initial: { opacity: 0, y: 10, scale: 0.96 }, animate: { opacity: 1, y: 0, scale: 1 }, exit: { opacity: 0, y: -8, scale: 0.96 }, transition: { duration: 0.25 } });
 /** Diagramas de aprendizaje que conectan clases, objetos y comportamiento. */
 export function ConceptDiagram({ kind, selected = "Animal", animal = "Perro", count = 0 }: Props) {
   const reduced = useReducedMotion();
@@ -17,7 +17,7 @@ export function ConceptDiagram({ kind, selected = "Animal", animal = "Perro", co
             <div className="v7-connector-arrow" aria-hidden="true">→</div>
             <div className="v7-objects-tray" aria-live="polite">
               {count ? Array.from({ length: Math.min(count, 4) }).map((_, i) => (
-                <motion.div {...(reduced ? { key: i } : shown(String(i)))} className="v7-class-node instance">
+                <motion.div key={i} {...(reduced ? {} : shown())} className="v7-class-node instance">
                   <span>OBJETO {i + 1}</span><strong>libro{i + 1}</strong><small>Datos propios</small>
                 </motion.div>
               )) : <span className="v7-empty-diagram">Pulsa «new Libro» para crear un objeto.</span>}
@@ -38,7 +38,7 @@ export function ConceptDiagram({ kind, selected = "Animal", animal = "Perro", co
           <div className="v7-diagram-state" aria-live="polite">
             <span>{kind === "inheritance" ? "Clase seleccionada" : "Objeto real de la variable Animal"}</span>
             <AnimatePresence mode="wait" initial={false}>
-              <motion.strong {...(reduced ? { key: active } : shown(active))}>{active}</motion.strong>
+              <motion.strong key={active} {...(reduced ? {} : shown())}>{active}</motion.strong>
             </AnimatePresence>
             <small>{active === "Perro" ? "sonido() → Guau" : active === "Gato" ? "sonido() → Miau" : "sonido() → Comportamiento base"}</small>
           </div>
