@@ -22,8 +22,8 @@ export function OOPPlayground({ kind }: { kind: PlaygroundKind }) {
           <strong>{books.length} objeto{books.length === 1 ? "" : "s"}</strong>
         </div>
         <div className="encapsulation-lab-actions">
-          <button type="button" className="btn" onClick={() => setBooks((items) => [...items, "Libro: POOQuest · Java"])}>new Libro("POOQuest", "Java")</button>
-          <button type="button" className="btn btn-outline" onClick={() => setBooks((items) => [...items, "Libro: Otro · Autor"])}>new Libro("Otro", "Autor")</button>
+          <button type="button" className="btn" onClick={() => setBooks((items) => [...items, "Libro: POOQuest · Java"])}>new Libro(&quot;POOQuest&quot;, &quot;Java&quot;)</button>
+          <button type="button" className="btn btn-outline" onClick={() => setBooks((items) => [...items, "Libro: Otro · Autor"])}>new Libro(&quot;Otro&quot;, &quot;Autor&quot;)</button>
           <button type="button" className="btn btn-outline" onClick={() => setBooks([])}>Reiniciar</button>
         </div>
         <div className="encapsulation-lab-feedback" role="status" aria-live="polite">
