@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ConceptDiagram } from "./ConceptDiagram";
 
 export type PlaygroundKind = "abstraction" | "inheritance" | "polymorphism";
 
@@ -17,6 +18,7 @@ export function OOPPlayground({ kind }: { kind: PlaygroundKind }) {
         <div className="kicker">Laboratorio interactivo · Abstracción</div>
         <h3>Una clase, muchos objetos</h3>
         <p>La clase Libro define el modelo. Crea dos ejemplares distintos para comprobar que cada uno conserva sus propios atributos.</p>
+        <ConceptDiagram kind="abstraction" count={books.length} />
         <div className="encapsulation-lab-state">
           <code>class Libro {"{"} String titulo; String autor; {"}"}</code>
           <strong>{books.length} objeto{books.length === 1 ? "" : "s"}</strong>
@@ -41,6 +43,7 @@ export function OOPPlayground({ kind }: { kind: PlaygroundKind }) {
         <div className="kicker">Laboratorio interactivo · Herencia</div>
         <h3>Especializa una clase base</h3>
         <p>Animal define el método sonido(). Perro y Gato lo heredan y pueden sobrescribir su comportamiento.</p>
+        <ConceptDiagram kind="inheritance" selected={selected} />
         <div className="encapsulation-lab-state">
           <code>Animal → Perro / Gato</code>
           <strong>{selected}</strong>
@@ -66,6 +69,7 @@ export function OOPPlayground({ kind }: { kind: PlaygroundKind }) {
       <div className="kicker">Laboratorio interactivo · Polimorfismo</div>
       <h3>Una llamada, respuestas diferentes</h3>
       <p>La variable mantiene el tipo Animal. Cambia el objeto que contiene y ejecuta el mismo método sonido().</p>
+      <ConceptDiagram kind="polymorphism" animal={animal} />
       <div className="encapsulation-lab-state">
         <code>Animal animal = new {animal}();</code>
         <strong>{animal}</strong>

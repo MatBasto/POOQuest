@@ -63,3 +63,31 @@ h1,h2,h3,.logo,.next-mission-card strong{font-family:"Trebuchet MS","Segoe UI",s
 @media(max-width:740px){.v7-boss-checklist{grid-template-columns:repeat(2,minmax(0,1fr))}.v7-field-notes{align-items:flex-start}.v7-field-notes .btn{width:100%;margin:0}}
 @media(max-width:480px){.v7-field-notes{gap:10px;padding:16px}.v7-field-icon{width:46px;height:46px;font-size:1.4rem}.v7-p00-coach{padding:14px}.v7-p00-header small{display:none}}
 @media(prefers-reduced-motion:reduce){.v7-p00-avatar,.v7-sigil{animation:none!important;transition:none!important}}
+
+/* Visualizaciones didácticas: relaciones y cambios de estado */
+.v7-concept-diagram{padding:17px;border:1px solid #3f706b;border-radius:20px;background:radial-gradient(circle at 50% -15%,rgba(143,232,200,.1),transparent 48%),#0d2227;display:grid;gap:16px}
+.v7-diagram-heading{font-size:.69rem;color:#bae5d4;font-weight:900;letter-spacing:.11em;display:flex;gap:10px;justify-content:space-between}
+.v7-diagram-heading>span{color:#f2ce8e}
+.v7-class-model{display:flex;align-items:center;gap:14px}
+.v7-class-node{border:1px solid #669d8d;border-radius:12px;min-width:0;padding:12px 14px;background:#1a3b3e;display:grid;gap:4px;text-align:center}
+.v7-class-node>span{font-size:.59rem;letter-spacing:.1em;color:#a7dacb;font-weight:800}
+.v7-class-node>strong{font-size:1.06rem;color:#fff8e8}
+.v7-class-node>small{font-size:.7rem;color:#c8e5dd}
+.v7-class-node.template{flex:0 0 35%;border-style:dashed}
+.v7-class-node.instance{border-color:#dfbd72;background:#293b37;min-width:114px}
+.v7-connector-arrow{font-size:1.5rem;color:#f5d38b}
+.v7-objects-tray{flex:1;display:flex;flex-wrap:wrap;gap:8px;min-height:60px}
+.v7-empty-diagram{align-self:center;font-size:.8rem;color:#b5cec3}
+.v7-class-tree{display:grid;justify-items:center}
+.v7-class-node.parent{width:min(250px,90%)}
+.v7-tree-lines{height:39px;width:40%;border-bottom:2px solid #70af99;position:relative}
+.v7-tree-lines span:nth-child(1){height:100%;width:2px;background:#70af99;position:absolute;left:50%}
+.v7-tree-lines span:nth-child(2){height:12px;width:2px;background:#70af99;position:absolute;left:0;bottom:-12px}
+.v7-tree-lines span:nth-child(3){height:12px;width:2px;background:#70af99;position:absolute;right:0;bottom:-12px}
+.v7-tree-leaves{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:75%;margin-top:12px}
+.v7-class-node.child.selected{background:#34544a;border-color:#f3d58f;box-shadow:0 0 0 2px rgba(233,207,137,.17)}
+.v7-diagram-state{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 14px;border-radius:10px;background:#1d3838}
+.v7-diagram-state>span{font-size:.76rem;color:#cbded1}
+.v7-diagram-state>strong{color:#f5d28e}
+.v7-diagram-state>small{margin-left:auto;color:#b6e6ce}
+@media(max-width:600px){.v7-class-model{flex-direction:column}.v7-class-node.template{width:100%}.v7-connector-arrow{transform:rotate(90deg)}.v7-objects-tray{width:100%}.v7-tree-leaves{width:100%}.v7-diagram-state>small{margin-left:0}}
