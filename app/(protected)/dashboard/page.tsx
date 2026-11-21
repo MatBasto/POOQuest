@@ -86,10 +86,10 @@ export default async function DashboardPage() {
             <div className="next-mission-card"><div><small>RUTA COMPLETADA</small><strong>Has recorrido todas las misiones disponibles</strong><span>Puedes revisitar cualquier territorio para practicar.</span></div><Link className="btn" href="/modules">Explorar territorios</Link></div>
           )}
         </div>
-        <div className="core-visual" aria-hidden="true">
+        <div className="core-visual v7-core-visual" aria-hidden="true">
           <div className="core-ring ring-one" />
           <div className="core-ring ring-two" />
-          <div className="core-center">POO</div>
+          <div className="core-center">PQ</div>
           <span className="core-node n1">◇</span>
           <span className="core-node n2">⬡</span>
           <span className="core-node n3">⌘</span>
@@ -103,11 +103,12 @@ export default async function DashboardPage() {
         <Link href="/rewards">Ver logros →</Link>
       </section>
 
+      <section className="v7-field-notes" aria-label="Cómo explorar el Núcleo"><div className="v7-field-icon">✦</div><div><span className="v7-eyebrow">TU GUÍA DE EXPEDICIÓN</span><h2>Aprender es parte de la aventura</h2><p>En cada misión descubrirás un concepto, lo pondrás a prueba y resolverás una actividad. P00 te acompaña cuando lo necesites.</p></div><Link className="btn secondary" href="/how-to-play">Guía de campo →</Link></section>
       <div className="map-heading">
         <div><div className="kicker">Mapa de POOQuest</div><h2>Los cuatro territorios</h2></div>
 
       </div>
-      <p className="subtitle">Consulta tu avance en el mapa. Para elegir otra misión, abre Territorios en el menú.</p>
+      <p className="subtitle">Cada emblema representa una habilidad. Explora los territorios y observa cómo se restaura el Núcleo al progresar.</p>
       <AdventureMap modules={adventureModules} showActions={false} />
     </div>
   );
