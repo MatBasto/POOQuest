@@ -40,6 +40,9 @@ export async function POST(request: Request) {
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) return jsonError("Inicia sesión antes de ejecutar Java.", 401);
 
+  const bodySize = Number(request.headers.get("content-length") || 0);
+  if (bodySize > 50000) return jsonError("La solicitud excede el tamaño permitido.", 413);
+
   let body: unknown;
   try {
     body = await request.json();
