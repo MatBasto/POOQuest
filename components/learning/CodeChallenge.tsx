@@ -8,7 +8,7 @@ import { playGameSound, primeSound } from "@/lib/sound";
 
 const Editor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
-type ExecuteResult = { output?: string; status?: string; statusId?: number; passed?: boolean; error?: string };
+type ExecuteResult = { output?: string; status?: string; statusId?: number; passed?: boolean; error?: string; feedback?: string };
 
 export function CodeChallenge({
   challenge,
@@ -30,6 +30,7 @@ export function CodeChallenge({
   const [hasEverPassed, setHasEverPassed] = useState(initiallyPassed);
   const [rewardGranted, setRewardGranted] = useState(false);
 
+  const [graderFeedback, setGraderFeedback] = useState<string | null>(null);
   const [executionState, setExecutionState] = useState<"compile" | "runtime" | "output" | "service" | "session" | "input">("output");
 
   async function run() {
@@ -39,6 +40,7 @@ export function CodeChallenge({
     setStatus("Procesando");
     setPassed(null);
     setRewardGranted(false);
+    setGraderFeedback(null);
     try {
       const response = await fetch("/api/execute", {
         method: "POST",
@@ -60,6 +62,7 @@ export function CodeChallenge({
       setOut(data.output || data.status || "Sin salida");
       setStatus(data.status || "Procesado");
       setPassed(didPass);
+      setGraderFeedback(data.feedback || null);
       if (didPass) {
         setRewardGranted(firstPass);
         setHasEverPassed(true);
@@ -122,13 +125,13 @@ export function CodeChallenge({
       <button className="btn boss-run" onClick={run} disabled={loading || !code.trim()}>{loading ? "ANALIZANDO MISIÓN..." : hasEverPassed ? "↻ EJECUTAR COMO REPASO" : "▶ EJECUTAR CÓDIGO JAVA"}</button>
       <div className="console-shell"><div className="console-title"><span>CONSOLA</span><small>{status}</small></div><div className="console">{out}</div></div>
 
-      <div role="status">
+      <div role="status" aria-live="polite">
       {passed !== null && (
         <div className={`boss-result ${passed ? "success" : "failure"}`}>
           <div className="boss-result-icon">{passed ? "★" : "!"}</div>
           <div>
             <strong>{passed ? rewardGranted ? "JEFE DERROTADO" : "REPASO SUPERADO" : recovery[executionState][0]}</strong>
-            <p>{passed ? rewardGranted ? "La salida coincide con la esperada. El Núcleo recuperó otro fragmento." : "La solución sigue siendo correcta. Tu progreso se conserva y no se añade XP duplicada." : recovery[executionState][1]}</p>
+            <p>{passed ? rewardGranted ? "Tu salida y las pruebas de comportamiento de POO son correctas. ¡Jefe superado!" : "La solución sigue siendo correcta. Tu progreso se conserva y no se añade XP duplicada." : graderFeedback || recovery[executionState][1]}</p>
           </div>
           {passed && rewardGranted && <span className="xp-burst">+{challenge.xp_reward} XP</span>}
           {passed && !rewardGranted && <span className="badge">Repaso · sin XP extra</span>}
