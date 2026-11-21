@@ -1,0 +1,65 @@
+/* POOQuest v7 — Expedición al Núcleo. Un solo estilo visual compartido. */
+:root{--bg:#081619;--bg-soft:#0e2023;--panel:#102328;--panel2:#173239;--panel3:#1d3d44;--line:#2b4b50;--line-bright:#4b8784;--text:#f6f1e5;--muted:#b5c6c3;--blue:#65c4be;--blue2:#9ce5d8;--cyan:#91e7d0;--green:#6fe0b5;--yellow:#f4cf80;--purple:#b99ad9;--danger:#ff978e}
+body{background:radial-gradient(circle at 85% -20%,rgba(106,224,196,.12),transparent 32%),radial-gradient(circle at 12% 42%,rgba(241,193,112,.06),transparent 30%),#081619;color:var(--text);font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif}
+h1,h2,h3,.logo,.next-mission-card strong{font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif}
+.kicker,.v7-eyebrow{color:#a1e3ce;font-size:.68rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.subtitle{color:var(--muted)}
+.card{border-color:rgba(119,171,157,.28);background:linear-gradient(148deg,#173039,#0d2127);box-shadow:0 18px 45px rgba(0,0,0,.15)}
+.card:hover{border-color:rgba(119,205,177,.48)}
+.btn{background:#9ae6cc;color:#102d30;border:1px solid #bbeedd;box-shadow:0 8px 21px rgba(0,0,0,.12);font-weight:800}
+.btn:hover{filter:brightness(1.07)}
+.btn.secondary,.btn.btn-outline{background:#17363a;border:1px solid #50736e;color:#eef9f1;box-shadow:none}
+.sidebar{background:linear-gradient(180deg,#102628,#0a1c20);border-right-color:#355751;padding:23px 14px}
+.logo{gap:11px;align-items:center;padding:2px 10px 28px;letter-spacing:normal;font-size:1rem}
+.logo .v7-brand-mark{display:grid;place-items:center;width:43px;height:43px;flex:0 0 auto;border-radius:14px 14px 6px 14px;border:1px solid #c0efce;color:#152e30;background:#a6dec9;transform:rotate(-5deg);font-weight:1000;box-shadow:5px 5px 0 #244e49}
+.v7-brand-mark>span{color:#0e4542}
+.v7-brand-word{display:grid;font-size:1.32rem;line-height:1;letter-spacing:-.055em}
+.logo .v7-brand-word>small{margin:7px 0 0;font-size:.48rem;letter-spacing:.15em;color:#a5c2b6}
+.sidebar-mission-label{color:#95beb1}
+.nav a{color:#cbded6;font-weight:700;min-height:46px}
+.nav a>span{display:flex;align-items:center;justify-content:center;color:#8dbfb1}
+.nav a.active{border-color:#558f82!important;background:#21423f!important;color:#ffffff!important}
+.nav a.active>span{color:#b5ffe0}
+.nav a:hover{background:#1a3637;border-color:#365d58}
+.v7-sidebar-guide{display:flex;align-items:center;gap:9px;margin:20px 0 14px;padding:12px 9px;background:#19373a;border:1px solid #436962;border-radius:15px}
+.v7-sidebar-guide>div{display:grid;gap:3px}
+.v7-sidebar-guide strong{font-size:.77rem;line-height:1.2}
+.v7-sidebar-guide a{font-size:.68rem;color:#adebd6;text-decoration:underline;text-underline-offset:3px}
+.v7-p00-avatar{flex:none;display:grid;place-items:center;width:72px;height:72px;border-radius:23px;background:linear-gradient(155deg,#1b4949,#102c35);box-shadow:inset 0 0 0 1px #519081,0 7px 19px rgba(0,0,0,.19)}
+.v7-p00-avatar svg{width:90%;height:90%}
+.v7-p00-avatar.small{width:48px;height:48px;border-radius:14px}
+.v7-p00-coach{display:grid;gap:12px;padding:19px;border:1px solid #577f74;border-radius:22px;background:linear-gradient(130deg,rgba(32,66,64,.95),rgba(14,36,40,.96));box-shadow:0 13px 40px rgba(0,0,0,.11)}
+.v7-p00-coach.compact{padding:16px}
+.v7-p00-header{display:flex;align-items:center;gap:13px}
+.v7-p00-header>div{display:grid;gap:2px}
+.v7-p00-header strong{color:#fff9ea;font-size:1.04rem}
+.v7-p00-header small{color:#b6ccc4;line-height:1.4}
+.v7-coach-bubble{border-radius:12px;background:#0e282c;padding:12px 15px;border-left:3px solid #f0cf88;min-height:50px}
+.v7-coach-bubble p{margin:0;line-height:1.58;color:#f1f3e8}
+.v7-coach-bubble .v7-coach-outcome{margin-top:10px;padding-top:9px;border-top:1px solid #41645f;color:#c6e7e1}
+.v7-coach-actions{display:flex;gap:8px;flex-wrap:wrap}
+.v7-coach-actions button{border:1px solid #547a70;padding:9px 13px;border-radius:999px;background:#18393b;color:#e1f6ed;font-size:.8rem;font-weight:750;min-height:40px}
+.v7-coach-actions button.active{background:#d8f1d9;color:#183f3b;border-color:#d8f1d9}
+.v7-coach-actions button:hover{border-color:#b4eacc}
+.v7-coach-note{margin:0;font-size:.72rem;color:#b7cfc4;line-height:1.5}
+.v7-territory-emblem{position:relative;display:grid;place-items:center}
+.v7-sigil{display:block;filter:drop-shadow(0 0 10px currentColor)}
+.territory-node{border-color:rgba(var(--territory-rgb),.55);background:radial-gradient(circle at 12% 38%,rgba(var(--territory-rgb),.17),transparent 38%),linear-gradient(145deg,#162d31,#102126)}
+.v7-territory-nudge{display:inline-flex;align-items:center;color:#d9e8de!important;font-size:.78rem!important}
+.v7-territory-nudge:before{content:"◆";color:var(--territory);margin-right:9px;font-size:.65rem}
+.v7-observe-label{margin-top:22px;font-size:.68rem;letter-spacing:.14em;font-weight:900;color:#c5e6c9}
+.v7-boss-checklist{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:14px 0}
+.v7-boss-checklist span{padding:10px;border:1px solid #4b6c66;border-radius:11px;background:#142c31;color:#c5e8d9;font-size:.73rem;text-align:center}
+.v7-field-notes{display:flex;align-items:center;gap:17px;padding:21px;margin:25px 0 29px;background:linear-gradient(120deg,#1a3637,#142b2e);border:1px solid #53776b;border-radius:23px}
+.v7-field-icon{display:grid;place-items:center;width:65px;height:65px;flex:0 0 auto;border:2px dashed #b5d99e;border-radius:50%;font-size:2rem;color:#e9d59e}
+.v7-field-notes>div:nth-child(2){flex:1;min-width:0}
+.v7-field-notes h2{font-size:1.25rem;margin:5px 0 4px}
+.v7-field-notes p{margin:0;color:#c3d7d0;font-size:.85rem;line-height:1.5}
+.v7-field-notes .btn{flex:0 0 auto}
+.adventure-hero{background:radial-gradient(circle at 85% 48%,rgba(115,232,177,.17),transparent 40%),linear-gradient(125deg,#15363a,#0e222b);border-color:#46796d}
+.v7-core-visual{filter:drop-shadow(0 0 15px rgba(124,231,186,.13))}
+.v7-core-visual .core-center{color:#d1f6e3}
+@media(max-width:1000px){.v7-field-notes{flex-wrap:wrap}.v7-field-notes .btn{margin-left:auto}}
+@media(max-width:740px){.v7-boss-checklist{grid-template-columns:repeat(2,minmax(0,1fr))}.v7-field-notes{align-items:flex-start}.v7-field-notes .btn{width:100%;margin:0}}
+@media(max-width:480px){.v7-field-notes{gap:10px;padding:16px}.v7-field-icon{width:46px;height:46px;font-size:1.4rem}.v7-p00-coach{padding:14px}.v7-p00-header small{display:none}}
+@media(prefers-reduced-motion:reduce){.v7-p00-avatar,.v7-sigil{animation:none!important;transition:none!important}}
