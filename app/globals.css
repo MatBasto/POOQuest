@@ -669,3 +669,41 @@ h2 { letter-spacing: -.025em; }
 .skip-to-content:focus { transform: translateY(0); }
 .sequence-options, .mission-actions { flex-wrap: wrap; }
 .mission-actions button { white-space: normal; }
+
+
+/* POOQuest v6 · laboratorio didáctico */
+.encapsulation-lab {
+  display: grid; gap: 14px; margin-top: 22px; padding: 20px;
+  border: 1px solid #3b789b; border-radius: 18px;
+  background: linear-gradient(145deg, rgba(11,49,70,.95), rgba(5,26,44,.95));
+}
+.encapsulation-lab h3 { margin: 0; font-size: 1.22rem; }
+.encapsulation-lab p { margin: 0; color: #c7dbef; line-height: 1.6; }
+.encapsulation-lab-state {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+  gap: 12px; border-radius: 12px; padding: 18px;
+  background: #061626; border: 1px solid #275477;
+}
+.encapsulation-lab-state > div { display: grid; gap: 4px; }
+.encapsulation-lab-state small { color: #b1cde6; }
+.encapsulation-lab-state strong { color: #41e0bd; font-size: 2.2rem; font-variant-numeric: tabular-nums; }
+.encapsulation-lab-state code { color: #8cc6ff; }
+.encapsulation-lab-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.encapsulation-lab-actions .btn { min-height: 44px; }
+.encapsulation-lab-actions .btn-outline { background: #0c2438; border: 1px solid #3d7599; }
+.encapsulation-lab-feedback {
+  display: grid; gap: 6px; border: 1px solid #368b82;
+  background: rgba(17,85,83,.18); border-radius: 10px; padding: 12px;
+}
+.encapsulation-lab-feedback strong { color: #6ce1d0; }
+.encapsulation-lab-feedback span { color: #e8f7ff; }
+.encapsulation-lab .encapsulation-lab-tip {
+  padding: 10px 12px; border-left: 3px solid #68aaff; background: rgba(24,71,111,.15);
+}
+@media (max-width: 520px) {
+  .encapsulation-lab { padding: 14px; }
+  .encapsulation-lab-actions .btn { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
+}
