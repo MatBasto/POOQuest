@@ -101,8 +101,8 @@ export async function POST(request: Request) {
 
   try {
     const first = await executeJava(sourceCode, endpoint, headers);
-    let output = String(first.stdout ?? first.compile_output ?? first.stderr ?? first.message ?? "");
-    let statusId = Number(first.status?.id || 0);
+    const output = String(first.stdout || first.compile_output || first.stderr || first.message || "");
+    const statusId = Number(first.status?.id || 0);
     let status = String(first.status?.description || "Procesado");
     let passed = statusId === 3 && normalizeJavaOutput(first.stdout) === normalizeJavaOutput(challenge.expected_output);
     let feedback: string | undefined;
@@ -118,7 +118,7 @@ export async function POST(request: Request) {
         const checked = await executeJava(behaviorSource, endpoint, headers);
         passed = checked.status?.id === 3 && normalizeJavaOutput(checked.stdout) === VERIFIED_MARKER;
         if (!passed) {
-          const raw = normalizeJavaOutput(checked.stdout ?? checked.compile_output ?? checked.stderr ?? checked.message);
+          const raw = normalizeJavaOutput(checked.stdout || checked.compile_output || checked.stderr || checked.message);
           feedback = raw.includes("POOQUEST_TESTS_FAILED:")
             ? raw.split("POOQUEST_TESTS_FAILED:")[1]?.slice(0, 220).trim()
             : "La salida es correcta, pero las clases, los métodos o sus comportamientos no superaron las pruebas del reto.";
