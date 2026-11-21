@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { EncapsulationSimulator } from "./EncapsulationSimulator";
+import { OOPPlayground } from "./OOPPlayground";
 
 type VisualPreset = {
   a: string;
@@ -180,6 +181,9 @@ export function ConceptVisual({ type }: { type?: string | null }) {
         </motion.div>
       </div>
 
+      {["class_object", "abstraction_challenge"].includes(type) && <OOPPlayground kind="abstraction" />}
+      {["inheritance_intro", "method_override"].includes(type) && <OOPPlayground kind="inheritance" />}
+      {["polymorphism_intro", "dynamic_dispatch"].includes(type) && <OOPPlayground kind="polymorphism" />}
       {["encapsulation_intro", "access_modifiers", "getters_setters", "state_validation", "encapsulation_challenge", "encapsulation"].includes(type) && <EncapsulationSimulator />}
       {p.note && (
         <p className="subtitle" style={{ marginTop: 18, textAlign: "center" }}>
