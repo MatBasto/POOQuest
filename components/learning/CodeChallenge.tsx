@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Challenge } from "@/lib/types";
 import { playGameSound, primeSound } from "@/lib/sound";
+import { P00Coach } from "@/components/game/P00Coach";
 
 const Editor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
@@ -107,7 +108,8 @@ export function CodeChallenge({
         </div>
       )}
 
-      <p className="exercise-guide"><strong>Reto Java</strong><span>Escribe tu solución en el editor, pulsa el botón de ejecución y compara la consola con la salida esperada. Si estás repasando, usa «Ejecutar como repaso».</span></p>
+      <P00Coach compact title="Antes de programar" instruction="No basta con imprimir el texto: implementa las clases y el comportamiento solicitado." steps="1. Lee el enunciado. 2. Identifica clases y métodos. 3. Completa Main.java. 4. Ejecuta código. 5. Usa la consola para corregir errores." outcome={graderFeedback || (passed === false ? recovery[executionState][1] : undefined)} />
+      <div className="v7-boss-checklist"><span>01 · Diseña clases</span><span>02 · Implementa métodos</span><span>03 · Ejecuta Java</span><span>04 · Revisa pruebas</span></div>
       <div className="boss-objective"><span>OBJETIVO DE SALIDA</span><code>{challenge.expected_output}</code></div>
 
       <div className="editor-shell">
