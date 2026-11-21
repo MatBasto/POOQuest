@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
+import { EncapsulationSimulator } from "./EncapsulationSimulator";
 
 type VisualPreset = {
   a: string;
@@ -10,6 +11,7 @@ type VisualPreset = {
 };
 
 export function ConceptVisual({ type }: { type?: string | null }) {
+  const reduceMotion = useReducedMotion();
   if (!type) return null;
 
   const presets: Record<string, VisualPreset> = {
@@ -151,7 +153,7 @@ export function ConceptVisual({ type }: { type?: string | null }) {
       <div className="row" style={{ flexWrap: "wrap", justifyContent: "center" }}>
         <motion.div
           className="visual-box"
-          animate={{ y: [0, -8, 0] }}
+          animate={reduceMotion ? undefined : { y: [0, -8, 0] }}
           transition={{ duration: 2.4, repeat: Infinity }}
         >
           {p.a}
@@ -161,7 +163,7 @@ export function ConceptVisual({ type }: { type?: string | null }) {
 
         <motion.div
           className="visual-box"
-          animate={{ scale: [1, 1.05, 1] }}
+          animate={reduceMotion ? undefined : { scale: [1, 1.05, 1] }}
           transition={{ duration: 2.4, repeat: Infinity }}
         >
           {p.b}
@@ -171,13 +173,14 @@ export function ConceptVisual({ type }: { type?: string | null }) {
 
         <motion.div
           className="visual-box"
-          animate={{ y: [0, 8, 0] }}
+          animate={reduceMotion ? undefined : { y: [0, 8, 0] }}
           transition={{ duration: 2.4, repeat: Infinity }}
         >
           {p.c}
         </motion.div>
       </div>
 
+      {["encapsulation_intro", "access_modifiers", "getters_setters", "state_validation", "encapsulation_challenge", "encapsulation"].includes(type) && <EncapsulationSimulator />}
       {p.note && (
         <p className="subtitle" style={{ marginTop: 18, textAlign: "center" }}>
           {p.note}
