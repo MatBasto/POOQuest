@@ -8,6 +8,7 @@ import { MissionActivity } from "@/components/game/MissionActivity";
 import { Celebration, type CelebrationKind } from "@/components/game/Celebration";
 import { getTerritory } from "@/lib/game";
 import { playGameSound } from "@/lib/sound";
+import { P00Coach } from "@/components/game/P00Coach";
 import type { ContentRow, Activity, Challenge } from "@/lib/types";
 
 type Stage = "contenido" | "actividad" | "reto";
@@ -116,12 +117,14 @@ export function LevelTabs({
             <div className="mission-briefing-icon" style={{ color: territory.accent }}>{territory.icon}</div>
             <div><div className="kicker">Briefing de misión</div><h2>Antes de jugar, entiende la herramienta que vas a usar</h2><p>La teoría aquí es corta a propósito. Lee el concepto, observa el ejemplo y continúa cuando puedas explicarlo con tus propias palabras.</p></div>
           </section>
+          <P00Coach compact title="Tu tarea: comprender" instruction="Lee la idea principal y usa el laboratorio para observar qué cambia al interactuar con el objeto." steps="1. Observa el ejemplo Java. 2. Predice qué pasaría al cambiar un dato. 3. Pruébalo en el laboratorio. 4. Explica el resultado con tus palabras." />
           {contents.map((content) => (
             <section className="card learning-card" key={content.id}>
               <div className="kicker">Concepto desbloqueado</div>
               <h2>{content.title}</h2>
               {content.body.split("\n").map((paragraph, index) => <p className="subtitle" key={index}>{paragraph}</p>)}
               {content.code_example && <div className="code-frame"><div className="code-frame-bar"><span /><span /><span /><small>JAVA // EJEMPLO</small></div><pre className="code">{content.code_example}</pre></div>}
+              <div className="v7-observe-label">EXPERIMENTA · ¿QUÉ CAMBIA SI MODIFICAS EL OBJETO?</div>
               <ConceptVisual type={content.visual_type} />
             </section>
           ))}

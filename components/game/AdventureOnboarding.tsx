@@ -35,7 +35,7 @@ export function AdventureOnboarding({ name }: { name: string }) {
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    const seen = window.localStorage.getItem("pooquest:onboarding:v2");
+    const seen = window.localStorage.getItem("pooquest:onboarding:v7");
     if (!seen) setOpen(true);
   }, []);
 

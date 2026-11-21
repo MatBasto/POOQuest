@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { missionGames } from "@/lib/game";
 import { playGameSound, primeSound } from "@/lib/sound";
+import { P00Coach } from "@/components/game/P00Coach";
 import type { Activity } from "@/lib/types";
 
 const instructions = {
@@ -64,7 +65,6 @@ export function MissionActivity({
   const [assigned, setAssigned] = useState<Record<string, string>>({});
   const [sequence, setSequence] = useState<string[]>([]);
   const [message, setMessage] = useState("");
-  const [showHint, setShowHint] = useState(false);
   const [mistakes, setMistakes] = useState(0);
   const [hintsUsed, setHintsUsed] = useState(0);
   const [bestStars, setBestStars] = useState(initialBestStars);
@@ -86,7 +86,6 @@ export function MissionActivity({
 
   function startReview() {
     clearBoard();
-    setShowHint(false);
     setMistakes(0);
     setHintsUsed(0);
     setReviewing(true);
@@ -173,11 +172,6 @@ export function MissionActivity({
     setMistakes((value) => value + 1);
     setMessage(text);
     setResult(null);
-  }
-
-  function toggleHint() {
-    if (!showHint) setHintsUsed((value) => Math.max(value, 1));
-    setShowHint((value) => !value);
   }
 
   function validateSelect() {
@@ -306,17 +300,7 @@ export function MissionActivity({
 
       {reviewing && <ReviewNotice />}
 
-      <ExerciseGuide kind={game.kind} />
-      <div className="p00-message">
-        <div className="p00-avatar">P00</div>
-        <div>
-          <strong>{game.instruction}</strong>
-          {showHint && <p>{game.hint}</p>}
-        </div>
-        <button className="btn tiny secondary" aria-expanded={showHint} disabled={!canInteract} onClick={toggleHint}>
-          {showHint ? "Ocultar pista" : "Pedir pista"}
-        </button>
-      </div>
+      <P00Coach key={activity.id + (reviewing ? "-repaso" : "-mision")} title="Antes de comenzar" instruction={game.instruction} steps={instructions[game.kind][1]} hint={game.hint} onHintUsed={() => { if (canInteract) setHintsUsed(v => Math.max(v, 1)); }} />
 
       {game.kind === "select" && (
         <>

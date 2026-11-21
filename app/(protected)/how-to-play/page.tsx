@@ -5,10 +5,10 @@ export default function HowToPlayPage() {
     <div className="page how-page">
       <div className="kicker">Manual del explorador</div>
       <h1 className="title">¿Cómo se juega POOQuest?</h1>
-      <p className="subtitle lead">No necesitas memorizar un manual. La regla principal es simple: aprende una idea, úsala dentro de una misión y demuéstrala programando.</p>
+      <p className="subtitle lead">Aprende observando, experimenta con objetos y resuelve desafíos. P00 te orienta durante el camino para que siempre sepas qué hacer.</p>
 
       <section className="how-loop">
-        <div><b>1</b><strong>Descubre</strong><span>Lee una explicación breve y observa el concepto en acción.</span></div>
+        <div><b>1</b><strong>Descubre</strong><span>Observa el ejemplo, predice el resultado y experimenta en el laboratorio.</span></div>
         <div className="how-arrow">→</div>
         <div><b>2</b><strong>Supera la misión</strong><span>Clasifica, construye, ordena o toma una decisión.</span></div>
         <div className="how-arrow">→</div>
@@ -40,7 +40,7 @@ export default function HowToPlayPage() {
         <div className="rule-list">
           <p><b>01.</b> Puedes repetir una misión, pero la XP de esa actividad se entrega una sola vez.</p>
           <p><b>02.</b> Los niveles bloqueados muestran la experiencia necesaria para abrirlos.</p>
-          <p><b>03.</b> Un reto Java solo se supera cuando el programa compila y produce la salida esperada.</p>
+          <p><b>03.</b> Un reto Java solo se supera cuando compila, produce la salida esperada y supera las pruebas de comportamiento de POO.</p>
           <p><b>04.</b> Tu progreso, XP, intentos, mejor puntuación de estrellas y logros se guardan en Supabase.</p>
           <p><b>05.</b> Repasar una misión puede mejorar tus estrellas, pero nunca vuelve a entregar XP.</p>
           <p><b>06.</b> Al completar un territorio recuperas un Fragmento del Núcleo y desbloqueas un logro especial.</p>

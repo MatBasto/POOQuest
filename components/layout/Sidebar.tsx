@@ -1,18 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import { NavIcon } from "@/components/ui/QuestIcons";
+import { P00Avatar } from "@/components/game/P00Coach";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { isSoundEnabled, playGameSound, setSoundEnabled } from "@/lib/sound";
 
 const links = [
-  { href: "/dashboard", icon: "⌂", label: "Aventura" },
-  { href: "/modules", icon: "◇", label: "Territorios" },
-  { href: "/progress", icon: "▥", label: "Progreso" },
-  { href: "/rewards", icon: "★", label: "Logros" },
-  { href: "/how-to-play", icon: "?", label: "Cómo jugar" },
-  { href: "/profile", icon: "●", label: "Perfil" },
+  { href: "/dashboard", icon: "home" as const, label: "Aventura" },
+  { href: "/modules", icon: "compass" as const, label: "Territorios" },
+  { href: "/progress", icon: "chart" as const, label: "Progreso" },
+  { href: "/rewards", icon: "trophy" as const, label: "Logros" },
+  { href: "/how-to-play", icon: "help" as const, label: "Cómo jugar" },
+  { href: "/profile", icon: "user" as const, label: "Perfil" },
 ];
 
 export function Sidebar({ name, xp }: { name: string; xp: number }) {
@@ -40,15 +42,16 @@ export function Sidebar({ name, xp }: { name: string; xp: number }) {
   return (
     <aside className="sidebar">
       <Link href="/dashboard" className="logo" aria-label="POOQuest inicio">
-        POO<span>Quest</span><small>ADVENTURE</small>
+        <span className="v7-brand-mark">P<span>Q</span></span><span className="v7-brand-word">POO<span>Quest</span><small>EXPEDICIÓN AL NÚCLEO</small></span>
       </Link>
-      <div className="sidebar-mission-label">NAVEGACIÓN</div>
+      <div className="sidebar-mission-label">CENTRO DE EXPLORACIÓN</div>
       <nav className="nav" aria-label="Navegación principal">
         {links.map((link) => {
           const active = pathname === link.href || (link.href !== "/dashboard" && pathname.startsWith(`${link.href}/`));
-          return <Link aria-current={active ? "page" : undefined} className={active ? "active" : ""} href={link.href} key={link.href}><span aria-hidden="true">{link.icon}</span>{link.label}</Link>;
+          return <Link aria-current={active ? "page" : undefined} className={active ? "active" : ""} href={link.href} key={link.href}><span aria-hidden="true"><NavIcon name={link.icon}/></span>{link.label}</Link>;
         })}
       </nav>
+      <div className="v7-sidebar-guide"><P00Avatar small/><div><strong>¿Necesitas orientación?</strong><Link href="/how-to-play">Consulta tu guía de campo →</Link></div></div>
       <div className="profile-mini">
         <div className="profile-orb">{name.slice(0, 1).toUpperCase()}</div>
         <div className="profile-copy"><strong>{name}</strong><small>{xp} XP acumulada</small></div>

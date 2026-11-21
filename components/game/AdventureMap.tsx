@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TerritorySigil } from "@/components/ui/QuestIcons";
 import { getTerritory } from "@/lib/game";
 import type { ModuleRow } from "@/lib/types";
 
@@ -17,11 +18,11 @@ export function AdventureMap({ modules, showActions = true }: { modules: Adventu
         return (
           <div className={`territory-row ${index % 2 ? "right" : "left"}`} key={module.id}>
             <div className="territory-node" style={{ "--territory": territory.accent, "--territory-rgb": territory.glow } as React.CSSProperties}>
-              <div className="territory-emblem">{territory.icon}</div>
+              <div className="territory-emblem v7-territory-emblem"><TerritorySigil kind={module.slug} size={100}/></div>
               <div className="territory-copy">
                 <div className="kicker">Territorio {index + 1} · {territory.subtitle}</div>
                 <h3>{territory.name}</h3>
-                <p>{territory.lore}</p>
+                <p>{territory.lore}</p><p className="v7-territory-nudge">{module.progress >= 100 ? "Fragmento recuperado · territorio dominado" : module.unlocked ? "Explora, experimenta y completa el próximo desafío" : "Territorio por descubrir"}</p>
                 <div className="territory-progress-row">
                   <div className="progress"><span style={{ width: `${module.progress}%` }} /></div>
                   <strong>{module.progress}%</strong>
